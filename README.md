@@ -1,8 +1,14 @@
 # OpenShift Origin Deployment Template
 
-## NOTE: Structural change to Repo
+This Azure Resource Manager template was created by a member of the community and not by Microsoft. Each Resource Manager template is licensed to you under a license agreement by its owner, not Microsoft. Microsoft is not responsible for Resource Manager templates provided and licensed by community members and does not screen for security, compatibility, or performance. Community Resource Manager templates are not supported under any Microsoft support program or service, and are made available AS IS without warranty of any kind.
 
-The master branch will now contain the most current release of OpenShift Origin with experimental items.  This may cause instability but will include new things or try new things.
+## IMPORTANT: Repo retirement
+
+With the release of OpenShift 4.x, there is no longer a need for an Azure Resource Manager template to deploy OpenShift in Azure.  For this reason, the openshift-origin repository is being retired.  The templates will remain as is and anyone is welcome to use these as references or examples.
+
+## NOTE: Structure of Repo
+
+The master branch contains the templates for OpenShift Origin 3.10.  These templates have not been updated or maintained in quite some time.
 
 Re-introduced non-HA deployment option with 1 Master node.
 
