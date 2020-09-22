@@ -28,6 +28,9 @@ export METRICS=${21}
 export LOGGING=${22}
 export AZURE=${23}
 export STORAGEKIND=${24}
+export $VNETNAME=${25}
+export $NODENSG=${26}
+export $NODEAVAILIBILITYSET=${27}
 
 # Determine if Commercial Azure or Azure Government
 CLOUD=$( curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/location?api-version=2017-04-02&format=text" | cut -c 1-2 )
@@ -128,7 +131,23 @@ fi
 # Setting the default openshift_cloudprovider_kind if Azure enabled
 if [[ $AZURE == "true" ]]
 then
-	export CLOUDKIND="openshift_cloudprovider_kind=azure"
+    CLOUDKIND="openshift_cloudprovider_kind=azure
+openshift_cloudprovider_azure_client_id=$AADCLIENTID
+openshift_cloudprovider_azure_client_secret=$AADCLIENTSECRET
+openshift_cloudprovider_azure_tenant_id=$TENANTID
+openshift_cloudprovider_azure_subscription_id=$SUBSCRIPTIONID
+openshift_cloudprovider_azure_cloud=$CLOUDNAME
+openshift_cloudprovider_azure_vnet_name=$VNETNAME
+openshift_cloudprovider_azure_security_group_name=$NODENSG
+openshift_cloudprovider_azure_availability_set_name=$NODEAVAILIBILITYSET
+openshift_cloudprovider_azure_resource_group=$RESOURCEGROUP
+openshift_cloudprovider_azure_location=$LOCATION"
+	if [[ $STORAGEKIND == "managed" ]]
+	then
+		SCKIND="openshift_storageclass_parameters={'kind': 'managed', 'storageaccounttype': 'Premium_LRS'}"
+	else
+		SCKIND="openshift_storageclass_parameters={'kind': 'shared', 'storageaccounttype': 'Premium_LRS'}"
+	fi
 fi
 
 # Create Ansible Hosts File
@@ -160,6 +179,7 @@ openshift_master_console_port=443
 osm_default_node_selector='region=app'
 openshift_disable_check=disk_availability,memory_availability,docker_image_availability
 $CLOUDKIND
+$SCKIND
 
 # default selectors for router and registry services
 openshift_router_selector='region=infra'
