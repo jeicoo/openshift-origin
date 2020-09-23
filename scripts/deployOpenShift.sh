@@ -313,7 +313,7 @@ runuser $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-play
 
 if [[ $AZURE == "true" ]]
 then
-    runuser -l $SUDOUSER -c "ansible-playbook -e openshift_enable_service_catalog=true -f 30 /usr/share/ansible/openshift-ansible/playbooks/openshift-service-catalog/config.yml"
+    runuser -l $SUDOUSER -c "ansible-playbook -e openshift_enable_service_catalog=true -f 30 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-service-catalog/config.yml"
 fi
 
 # Configure Metrics
