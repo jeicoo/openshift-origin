@@ -29,7 +29,7 @@ echo $(date) " - System updates successfully installed"
 if hostname -f|grep -- "-0" >/dev/null
 then
     echo $(date) " - Installing Ansible, pyOpenSSL and python-passlib"
-    yum -y --enablerepo=epel install ansible pyOpenSSL python-passlib
+    yum -y --enablerepo=epel install ansible-2.6.2 pyOpenSSL python-passlib
 fi
 
 # Install java to support metrics
