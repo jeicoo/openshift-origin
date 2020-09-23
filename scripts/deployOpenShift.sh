@@ -318,46 +318,45 @@ fi
 
 # Configure Metrics
 
-if [ $METRICS == "true" ]
+# Configure Metrics
+if [[ $METRICS == "true" ]]
 then
-	sleep 30	
-	echo $(date) "- Determining Origin version from rpm"
-	OO_VERSION="v"$(rpm -q origin | cut -d'-' -f 2 | head -c 3)
-	echo $(date) "- Deploying Metrics"
-	if [ $AZURE == "true" ]
-	then
-		runuser -l $SUDOUSER -c "ansible-playbook -f 10 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-metrics/config.yml -e openshift_metrics_install_metrics=True -e openshift_metrics_cassandra_storage_type=dynamic -e openshift_metrics_image_version=$OO_VERSION"
-	else
-		runuser -l $SUDOUSER -c "ansible-playbook -f 10 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-metrics/config.yml -e openshift_metrics_install_metrics=True -e openshift_metrics_image_version=$OO_VERSION"
-	fi
-	if [ $? -eq 0 ]
-	then
-	   echo $(date) " - Metrics configuration completed successfully"
-	else
-	   echo $(date) "- Metrics configuration failed"
-	   exit 11
-	fi
+    sleep 30
+    echo $(date) "- Deploying Metrics"
+    if [[ $AZURE == "true" ]]
+    then
+        runuser -l $SUDOUSER -c "ansible-playbook -e openshift_metrics_install_metrics=True -e openshift_metrics_cassandra_storage_type=dynamic -f 30 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-metrics/config.yml"
+    else
+        runuser -l $SUDOUSER -c "ansible-playbook -e openshift_metrics_install_metrics=True /home/$SUDOUSER/openshift-ansible/playbooks/openshift-metrics/config.yml"
+    fi
+    if [ $? -eq 0 ]
+    then
+        echo $(date) " - Metrics configuration completed successfully"
+    else
+        echo $(date) " - Metrics configuration failed"
+        exit 11
+    fi
 fi
 
 # Configure Logging
 
-if [ $LOGGING == "true" ] 
+if [[ $LOGGING == "true" ]]
 then
-	sleep 60
-	echo $(date) "- Deploying Logging"
-	if [ $AZURE == "true" ]
-	then
-		runuser -l $SUDOUSER -c "ansible-playbook -f 10 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-logging/config.yml -e openshift_logging_install_logging=True -e openshift_logging_es_pvc_dynamic=true -e openshift_master_dynamic_provisioning_enabled=True"
-	else
-		runuser -l $SUDOUSER -c "ansible-playbook -f 10 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-logging/config.yml -e openshift_logging_install_logging=True"
-	fi
-	if [ $? -eq 0 ]
-	then
-	   echo $(date) " - Logging configuration completed successfully"
-	else
-	   echo $(date) "- Logging configuration failed"
-	   exit 12
-	fi
+    sleep 60
+    echo $(date) "- Deploying Logging"
+    if [[ $AZURE == "true" ]]
+    then
+        runuser -l $SUDOUSER -c "ansible-playbook -e openshift_logging_install_logging=True -e openshift_logging_es_pvc_dynamic=true -f 30 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-logging/config.yml"
+    else
+        runuser -l $SUDOUSER -c "ansible-playbook -e openshift_logging_install_logging=True -f 30 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-logging/config.yml"
+    fi
+    if [ $? -eq 0 ]
+    then
+        echo $(date) " - Logging configuration completed successfully"
+    else
+        echo $(date) " - Logging configuration failed"
+        exit 12
+    fi
 fi
 
 # Delete yaml files
