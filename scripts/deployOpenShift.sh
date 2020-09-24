@@ -2,7 +2,7 @@
 
 echo $(date) " - Starting Script"
 
-echo "timeout=30" >> /etc/ansible/ansible.cfg
+echo "timeout=60" >> /etc/ansible/ansible.cfg
 
 set -e
 
