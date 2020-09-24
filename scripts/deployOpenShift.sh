@@ -2,6 +2,8 @@
 
 echo $(date) " - Starting Script"
 
+echo "timeout=30" >> /etc/ansible/ansible.cfg
+
 set -e
 
 export SUDOUSER=$1
