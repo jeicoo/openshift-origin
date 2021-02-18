@@ -185,7 +185,8 @@
 			"provider": "[parameters('redHatTags').provider]",
 			"app": "[parameters('redHatTags').app]",
 			"version": "[parameters('redHatTags').version]",
-			"platform": "[parameters('redHatTags').platform]"
+			"platform": "[parameters('redHatTags').platform]",
+			"costCenter": "OSPW"
 		},
 		"properties": {
 			"publisher": "Microsoft.Azure.Extensions",
